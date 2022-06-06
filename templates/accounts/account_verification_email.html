@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hey {{ user.first_name }}!
+
+nombre proyecto te da la bienvenida para continuar disfrutando de nuestro servicio activa tu cuenta dandole click al siguiente link:
+
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+Gracias por confiar en nosotros!.
+
+{% endautoescape %}

@@ -25,7 +25,7 @@ environ.Env.read_env()
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG', default=False)
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'category',
     'accounts',
     'store',
-    'anymail'
+    'carts',
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processors.menu_links',
+                'carts.context_processors.counter',
             ],
         },
     },
@@ -108,14 +110,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#Send emails
-
 ANYMAIL = {
     "SENDGRID_API_KEY": env('SECRET_SENDGRID_KEY'),
 }
 
-EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
-DEFAULT_FROM_EMAIL = env('DEFAULT_EMAIL_BACKEND')
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -140,6 +138,16 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR : 'danger',
+}
+
+EMAIL_DEFAULT = env('DEFAULT_EMAIL_BACKEND')
+
+# EMAIL_USE_TLS = True
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
